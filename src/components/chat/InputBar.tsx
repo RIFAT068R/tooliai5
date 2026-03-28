@@ -268,7 +268,7 @@ export function InputBar({
                 className={cn(
                   'p-1.5 rounded-lg transition-colors',
                   isRecording
-                    ? 'text-red-500 bg-red-50 dark:bg-red-900/20 hover:bg-red-100'
+                    ? 'text-red-500 bg-red-50  hover:bg-red-100'
                     : 'text-muted-foreground hover:text-foreground hover:bg-muted',
                   isProcessing && 'opacity-60 cursor-not-allowed'
                 )}

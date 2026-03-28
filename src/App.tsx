@@ -1,6 +1,6 @@
 import { useState, useCallback, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Menu } from 'lucide-react'
+import { Menu, Sparkles } from 'lucide-react'
 import { Toaster, toast } from 'react-hot-toast'
 
 import { Sidebar } from './components/layout/Sidebar'
@@ -359,16 +359,14 @@ export default function App() {
   // ── Loading screen ────────────────────────────────────────────────────────
   if (authLoading) {
     return (
-      <div className="flex items-center justify-center h-screen bg-background">
+      <div className="flex items-center justify-center h-screen" style={{ background: '#FAFAFA' }}>
         <div className="flex flex-col items-center gap-4">
-          <img
-            src="/logo.png"
-            alt="TooliAi"
-            className="w-16 h-16 rounded-2xl object-cover animate-pulse shadow-lg"
-          />
+          <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-indigo-500 to-violet-500 flex items-center justify-center shadow-lg animate-pulse">
+            <Sparkles size={28} className="text-white" />
+          </div>
           <div className="flex flex-col items-center gap-1">
-            <span className="font-bold text-base text-foreground tracking-tight">TooliAi</span>
-            <span className="text-xs text-muted-foreground">Loading…</span>
+            <span className="font-semibold text-[15px] text-gray-900 tracking-tight">TooliAi Suite</span>
+            <span className="text-xs" style={{ color: 'rgba(0,0,0,0.4)' }}>Loading…</span>
           </div>
         </div>
       </div>
@@ -381,10 +379,11 @@ export default function App() {
         position="top-right"
         toastOptions={{
           style: {
-            background: 'hsl(var(--card))',
-            color: 'hsl(var(--foreground))',
-            border: '1px solid hsl(var(--border))',
-            borderRadius: '12px',
+            background: '#ffffff',
+            color: '#111111',
+            border: '1px solid rgba(0,0,0,0.08)',
+            borderRadius: '14px',
+            boxShadow: '0 4px 16px rgba(0,0,0,0.08)',
             fontSize: '13px',
           },
         }}
@@ -418,7 +417,8 @@ export default function App() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 z-30 bg-black/50 lg:hidden"
+              className="fixed inset-0 z-30 lg:hidden"
+              style={{ background: 'rgba(0,0,0,0.2)', backdropFilter: 'blur(4px)' }}
               onClick={() => setMobileSidebarOpen(false)}
             />
             <motion.div
@@ -452,16 +452,29 @@ export default function App() {
       {/* Main content */}
       <div className="flex-1 flex flex-col min-w-0 h-screen">
         {/* Mobile header */}
-        <div className="flex items-center gap-3 px-4 py-3 border-b border-border bg-card/60 backdrop-blur-sm lg:hidden shrink-0">
+        <div
+          className="flex items-center gap-3 px-4 py-3 lg:hidden shrink-0"
+          style={{
+            background: 'rgba(255,255,255,0.9)',
+            backdropFilter: 'blur(20px) saturate(180%)',
+            WebkitBackdropFilter: 'blur(20px) saturate(180%)',
+            borderBottom: '1px solid rgba(0,0,0,0.06)',
+          }}
+        >
           <button
             onClick={() => setMobileSidebarOpen(true)}
-            className="p-2 rounded-xl hover:bg-muted transition-colors text-muted-foreground"
+            className="p-2 rounded-xl transition-colors"
+            style={{ color: 'rgba(0,0,0,0.5)' }}
+            onMouseEnter={e => (e.currentTarget as HTMLButtonElement).style.background = 'rgba(0,0,0,0.04)'}
+            onMouseLeave={e => (e.currentTarget as HTMLButtonElement).style.background = 'transparent'}
           >
             <Menu size={18} />
           </button>
           <div className="flex items-center gap-2">
-            <img src="/logo.png" alt="TooliAi" className="w-7 h-7 rounded-lg object-cover" />
-            <span className="font-bold text-sm text-foreground tracking-tight">TooliAi</span>
+            <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-indigo-500 to-violet-500 flex items-center justify-center">
+              <Sparkles size={13} className="text-white" />
+            </div>
+            <span className="font-semibold text-sm text-gray-900 tracking-tight">TooliAi</span>
           </div>
         </div>
 

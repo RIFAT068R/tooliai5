@@ -131,7 +131,7 @@ export function MessageBubble({
               />
               <div className="absolute inset-0 bg-black/0 group-hover:bg-black/25 transition-all duration-200 flex items-center justify-center">
                 <div className="opacity-0 group-hover:opacity-100 transition-opacity">
-                  <div className="flex items-center gap-1.5 px-3 py-2 bg-white/95 dark:bg-black/70 backdrop-blur-sm rounded-xl text-sm font-medium shadow-lg">
+                  <div className="flex items-center gap-1.5 px-3 py-2 bg-white/95 backdrop-blur-sm rounded-xl text-sm font-medium shadow-lg">
                     <ZoomIn size={14} />
                     View full size
                   </div>

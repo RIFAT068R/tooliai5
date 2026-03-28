@@ -26,10 +26,10 @@ interface ChatPageProps {
 }
 
 const MODE_META: Record<Mode, { label: string; icon: React.ReactNode; color: string; bg: string }> = {
-  chat: { label: 'AI Chat', icon: <MessageSquare size={12} />, color: 'text-indigo-600 dark:text-indigo-400', bg: 'bg-indigo-50 border-indigo-200 dark:bg-indigo-900/20 dark:border-indigo-800/50' },
-  search: { label: 'Web Search', icon: <Globe size={12} />, color: 'text-emerald-600 dark:text-emerald-400', bg: 'bg-emerald-50 border-emerald-200 dark:bg-emerald-900/20 dark:border-emerald-800/50' },
-  image: { label: 'Image Generator', icon: <Image size={12} />, color: 'text-pink-600 dark:text-pink-400', bg: 'bg-pink-50 border-pink-200 dark:bg-pink-900/20 dark:border-pink-800/50' },
-  analyze: { label: 'File Analyzer', icon: <FileSearch size={12} />, color: 'text-amber-600 dark:text-amber-400', bg: 'bg-amber-50 border-amber-200 dark:bg-amber-900/20 dark:border-amber-800/50' },
+  chat: { label: 'AI Chat', icon: <MessageSquare size={12} />, color: 'text-indigo-600', bg: 'bg-indigo-50 border-indigo-200' },
+  search: { label: 'Web Search', icon: <Globe size={12} />, color: 'text-emerald-600', bg: 'bg-emerald-50 border-emerald-200' },
+  image: { label: 'Image Generator', icon: <Image size={12} />, color: 'text-pink-600', bg: 'bg-pink-50 border-pink-200' },
+  analyze: { label: 'File Analyzer', icon: <FileSearch size={12} />, color: 'text-amber-600', bg: 'bg-amber-50 border-amber-200' },
 }
 
 const GENERATION_STEPS = [
@@ -177,7 +177,7 @@ export function ChatPage({
                   
                   {/* Image skeleton placeholder */}
                   <div className="w-full aspect-square max-w-sm bg-muted rounded-2xl overflow-hidden relative border border-border">
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full animate-[shimmer_2s_infinite]" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/60 to-transparent -translate-x-full animate-[shimmer_2s_infinite]" />
                     <div className="flex flex-col items-center justify-center h-full gap-3 text-muted-foreground/40">
                       <div className="relative">
                         <Image size={48} strokeWidth={1} />

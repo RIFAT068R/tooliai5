@@ -848,7 +848,7 @@ export function ImageEditor({ url, onClose, onApplyResult }: ImageEditorProps) {
               className={cn(
                 "flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-[10px] font-medium transition-all duration-150 active:scale-95",
                 collabEnabled
-                  ? "bg-emerald-500/10 border-emerald-500/30 text-emerald-600 dark:text-emerald-400"
+                  ? "bg-emerald-500/10 border-emerald-500/30 text-emerald-600 "
                   : "bg-muted/40 border-border/30 text-muted-foreground hover:border-border/60"
               )}
               title={collabEnabled ? "Disable live collaboration" : "Enable live collaboration"}
@@ -1945,7 +1945,7 @@ export function ImageEditor({ url, onClose, onApplyResult }: ImageEditorProps) {
                             setCollabError(null)
                             setCollabEnabled(true)
                           }}
-                          className="mt-1.5 flex items-center gap-1 text-[9px] font-semibold text-amber-600 dark:text-amber-400 hover:underline"
+                          className="mt-1.5 flex items-center gap-1 text-[9px] font-semibold text-amber-600  hover:underline"
                         >
                           <RefreshCw size={9} />
                           Retry connection

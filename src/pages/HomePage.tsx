@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { Globe, Image, FileSearch, MessageSquare, ArrowRight, Crown, Zap } from 'lucide-react'
+import { Globe, Image, FileSearch, MessageSquare, ArrowRight, Crown, Zap, Sparkles } from 'lucide-react'
 import type { Mode, ChatModel, ImageModel, PlanTier } from '../types'
 import { InputBar } from '../components/chat/InputBar'
 import { DEFAULT_CHAT_MODEL, DEFAULT_IMAGE_MODEL, PLANS } from '../lib/models'
@@ -23,43 +23,35 @@ interface HomePageProps {
 const SUGGESTIONS = [
   {
     icon: <Globe size={16} className="text-emerald-500" />,
+    iconBg: 'bg-emerald-50',
     title: 'Search the web',
     desc: 'Real-time answers with sources',
     mode: 'search' as Mode,
     prompt: 'What are the latest AI breakthroughs in 2025?',
-    gradient: 'from-emerald-50 to-teal-50 dark:from-emerald-950/30 dark:to-teal-950/30',
-    border: 'border-emerald-200 dark:border-emerald-800/50',
-    hover: 'hover:border-emerald-300 dark:hover:border-emerald-700',
   },
   {
     icon: <Image size={16} className="text-pink-500" />,
+    iconBg: 'bg-pink-50',
     title: 'Generate an image',
     desc: 'Create stunning visuals with AI',
     mode: 'image' as Mode,
     prompt: 'A cinematic photo of a neon-lit Tokyo street at night, raining',
-    gradient: 'from-pink-50 to-rose-50 dark:from-pink-950/30 dark:to-rose-950/30',
-    border: 'border-pink-200 dark:border-pink-800/50',
-    hover: 'hover:border-pink-300 dark:hover:border-pink-700',
   },
   {
     icon: <FileSearch size={16} className="text-amber-500" />,
+    iconBg: 'bg-amber-50',
     title: 'Analyze a document',
     desc: 'Upload files and extract insights',
     mode: 'analyze' as Mode,
     prompt: 'Summarize and extract the key points from this document',
-    gradient: 'from-amber-50 to-orange-50 dark:from-amber-950/30 dark:to-orange-950/30',
-    border: 'border-amber-200 dark:border-amber-800/50',
-    hover: 'hover:border-amber-300 dark:hover:border-amber-700',
   },
   {
     icon: <MessageSquare size={16} className="text-indigo-500" />,
+    iconBg: 'bg-indigo-50',
     title: 'Write content',
     desc: 'Draft emails, code, and more',
     mode: 'chat' as Mode,
     prompt: 'Write a compelling LinkedIn post about the importance of continuous learning in tech',
-    gradient: 'from-indigo-50 to-violet-50 dark:from-indigo-950/30 dark:to-violet-950/30',
-    border: 'border-indigo-200 dark:border-indigo-800/50',
-    hover: 'hover:border-indigo-300 dark:hover:border-indigo-700',
   },
 ]
 
@@ -91,17 +83,18 @@ export function HomePage({
         className="text-center mb-10"
       >
         <div className="flex items-center justify-center mb-5">
-          <img
-            src="/logo.png"
-            alt="TooliAi"
-            className="w-14 h-14 rounded-2xl object-cover shadow-md hover:scale-105 transition-transform duration-200"
-          />
+          <div
+            className="w-14 h-14 rounded-2xl bg-gradient-to-br from-indigo-500 to-violet-500 flex items-center justify-center hover:scale-105 transition-transform duration-200"
+            style={{ boxShadow: '0 4px 20px rgba(99,102,241,0.25)' }}
+          >
+            <Sparkles size={26} className="text-white" />
+          </div>
         </div>
-        <h1 className="text-3xl font-bold tracking-tight text-foreground mb-2">
+        <h1 className="text-[28px] font-semibold tracking-[-0.02em] text-gray-900 mb-2">
           {greeting},{' '}
-          <span className="gradient-text">{name}</span>
+          <span className="text-gradient">{name}</span>
         </h1>
-        <p className="text-muted-foreground text-base">
+        <p className="text-[15px]" style={{ color: 'rgba(0,0,0,0.45)' }}>
           What would you like to create today?
         </p>
       </motion.div>
@@ -114,19 +107,22 @@ export function HomePage({
           transition={{ duration: 0.4, delay: 0.05 }}
           className="w-full mb-6"
         >
-          <div className="flex items-center gap-3 p-3.5 rounded-2xl border border-border bg-card">
-            <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-              <Zap size={12} className="text-primary" />
+          <div
+            className="flex items-center gap-3 p-3.5 rounded-2xl"
+            style={{ background: '#fff', border: '1px solid rgba(0,0,0,0.06)', boxShadow: '0 1px 4px rgba(0,0,0,0.04)' }}
+          >
+            <div className="flex items-center gap-1.5 text-xs" style={{ color: 'rgba(0,0,0,0.45)' }}>
+              <Zap size={12} className="text-indigo-500" />
               <span>{messageCount}/{plan.limits.messagesPerDay} messages today</span>
             </div>
-            <div className="h-3.5 w-px bg-border" />
-            <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+            <div className="h-3.5 w-px" style={{ background: 'rgba(0,0,0,0.08)' }} />
+            <div className="flex items-center gap-1.5 text-xs" style={{ color: 'rgba(0,0,0,0.45)' }}>
               <Image size={12} className="text-pink-500" />
               <span>{imageCount}/{plan.limits.imagesPerDay} images today</span>
             </div>
             <button
               onClick={onUpgrade}
-              className="ml-auto flex items-center gap-1 text-xs font-medium text-primary hover:underline"
+              className="ml-auto flex items-center gap-1 text-xs font-medium text-indigo-600 hover:text-indigo-700 transition-colors"
             >
               <Crown size={11} />
               Upgrade
@@ -143,20 +139,35 @@ export function HomePage({
         transition={{ duration: 0.45, delay: 0.1 }}
         className="grid grid-cols-2 gap-2.5 w-full mb-8"
       >
-        {SUGGESTIONS.map(({ icon, title, desc, mode: suggMode, prompt, gradient, border, hover }) => (
+        {SUGGESTIONS.map(({ icon, iconBg, title, desc, mode: suggMode, prompt }) => (
           <motion.button
             key={title}
-            whileHover={{ scale: 1.015, y: -1 }}
+            whileHover={{ scale: 1.015, y: -2 }}
             whileTap={{ scale: 0.985 }}
             onClick={() => { onModeChange(suggMode); onSend(prompt) }}
-            className={`flex items-start gap-3 p-4 rounded-2xl border bg-gradient-to-br text-left transition-all duration-200 ${gradient} ${border} ${hover}`}
+            className="flex items-start gap-3 p-4 rounded-2xl text-left transition-all duration-200"
+            style={{
+              background: '#ffffff',
+              border: '1px solid rgba(0,0,0,0.06)',
+              boxShadow: '0 1px 4px rgba(0,0,0,0.04)',
+            }}
+            onMouseEnter={e => {
+              const el = e.currentTarget as HTMLButtonElement
+              el.style.border = '1px solid rgba(0,0,0,0.10)'
+              el.style.boxShadow = '0 4px 16px rgba(0,0,0,0.08)'
+            }}
+            onMouseLeave={e => {
+              const el = e.currentTarget as HTMLButtonElement
+              el.style.border = '1px solid rgba(0,0,0,0.06)'
+              el.style.boxShadow = '0 1px 4px rgba(0,0,0,0.04)'
+            }}
           >
-            <div className="mt-0.5 shrink-0">{icon}</div>
+            <div className={`w-9 h-9 rounded-xl ${iconBg} flex items-center justify-center shrink-0`}>{icon}</div>
             <div className="flex-1 min-w-0">
-              <div className="font-semibold text-sm text-foreground mb-0.5">{title}</div>
-              <div className="text-xs text-muted-foreground leading-snug">{desc}</div>
+              <div className="font-semibold text-[13px] text-gray-900 mb-0.5">{title}</div>
+              <div className="text-[12px] leading-snug" style={{ color: 'rgba(0,0,0,0.45)' }}>{desc}</div>
             </div>
-            <ArrowRight size={13} className="shrink-0 text-muted-foreground mt-0.5 opacity-40" />
+            <ArrowRight size={13} className="shrink-0 mt-1" style={{ color: 'rgba(0,0,0,0.25)' }} />
           </motion.button>
         ))}
       </motion.div>

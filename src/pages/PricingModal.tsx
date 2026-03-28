@@ -18,8 +18,8 @@ const PLAN_ICONS: Record<PlanTier, React.ReactNode> = {
 
 const PLAN_COLORS: Record<PlanTier, string> = {
   free: 'border-border',
-  pro: 'border-indigo-300 dark:border-indigo-700 ring-2 ring-indigo-100 dark:ring-indigo-900/40',
-  max: 'border-amber-300 dark:border-amber-700',
+  pro: 'border-indigo-300  ring-2 ring-indigo-100 ',
+  max: 'border-amber-300 ',
 }
 
 const PLAN_FEATURES: Record<PlanTier, string[]> = {
@@ -92,7 +92,7 @@ export function PricingModal({ open, currentPlan, onClose, onSelectPlan }: Prici
                 return (
                   <div
                     key={plan.id}
-                    className={`relative flex flex-col p-5 rounded-2xl border ${PLAN_COLORS[plan.id]} ${isPro ? 'bg-indigo-50/50 dark:bg-indigo-950/20' : 'bg-card'}`}
+                    className={`relative flex flex-col p-5 rounded-2xl border ${PLAN_COLORS[plan.id]} ${isPro ? 'bg-indigo-50/50 ' : 'bg-card'}`}
                   >
                     {isPro && (
                       <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-indigo-500 text-white text-xs font-semibold rounded-full shadow-sm">
