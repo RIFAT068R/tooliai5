@@ -1,0 +1,231 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
+
+@import '@blinkdotnew/ui/styles';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+}
+
+/* ── AI Suite Booster — ChatGPT/Gemini-inspired palette ─────────────────────── */
+:root {
+  /* Clean light mode — neutral base with deep indigo accent */
+  --background: 0 0% 99%;
+  --foreground: 220 15% 12%;
+  --card: 0 0% 100%;
+  --card-foreground: 220 15% 12%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 220 15% 12%;
+  --primary: 240 84% 58%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 240 20% 96%;
+  --secondary-foreground: 240 20% 30%;
+  --muted: 220 14% 96%;
+  --muted-foreground: 220 10% 52%;
+  --accent: 240 84% 62%;
+  --accent-foreground: 0 0% 100%;
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 220 13% 91%;
+  --input: 220 13% 91%;
+  --ring: 240 84% 58%;
+
+  --chart-1: 240 84% 58%;
+  --chart-2: 142 71% 45%;
+  --chart-3: 24 95% 53%;
+  --chart-4: 291 70% 50%;
+  --chart-5: 350 89% 60%;
+
+  --sidebar: 220 18% 97%;
+  --sidebar-foreground: 220 15% 12%;
+  --sidebar-primary: 240 84% 58%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 240 20% 94%;
+  --sidebar-accent-foreground: 240 20% 30%;
+  --sidebar-border: 220 13% 91%;
+  --sidebar-ring: 240 84% 58%;
+
+  --font-sans: 'DM Sans', sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+
+  --shadow-2xs: 0px 1px 2px hsl(0 0% 0% / 0.04);
+  --shadow-xs: 0px 2px 4px hsl(0 0% 0% / 0.06);
+  --shadow-sm: 0px 2px 8px hsl(0 0% 0% / 0.08);
+  --shadow: 0px 4px 12px hsl(0 0% 0% / 0.08);
+  --shadow-md: 0px 4px 16px hsl(0 0% 0% / 0.10);
+  --shadow-lg: 0px 8px 24px hsl(0 0% 0% / 0.12);
+  --shadow-xl: 0px 16px 40px hsl(0 0% 0% / 0.14);
+  --shadow-2xl: 0px 24px 60px hsl(0 0% 0% / 0.18);
+
+  --tracking-normal: -0.01em;
+  --spacing: 0.25rem;
+  --radius: 0.625rem;
+}
+
+:root.dark,
+.theme-linear.dark,
+.theme-glass.dark,
+.theme-midnight.dark,
+.theme-minimal.dark {
+  /* Deep dark mode — inspired by ChatGPT dark */
+  --background: 210 11% 9%;
+  --foreground: 210 12% 93%;
+  --card: 210 10% 12%;
+  --card-foreground: 210 12% 93%;
+  --popover: 210 10% 12%;
+  --popover-foreground: 210 12% 93%;
+  --primary: 240 72% 68%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 210 10% 18%;
+  --secondary-foreground: 210 12% 75%;
+  --muted: 210 10% 15%;
+  --muted-foreground: 210 10% 52%;
+  --accent: 240 72% 72%;
+  --accent-foreground: 0 0% 100%;
+  --destructive: 0 70% 55%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 210 10% 20%;
+  --input: 210 10% 20%;
+  --ring: 240 72% 68%;
+
+  --chart-1: 240 72% 68%;
+  --chart-2: 142 60% 55%;
+  --chart-3: 24 85% 60%;
+  --chart-4: 291 60% 65%;
+  --chart-5: 350 80% 65%;
+
+  --sidebar: 210 11% 10%;
+  --sidebar-foreground: 210 12% 85%;
+  --sidebar-primary: 240 72% 68%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 210 10% 16%;
+  --sidebar-accent-foreground: 210 12% 75%;
+  --sidebar-border: 210 10% 18%;
+  --sidebar-ring: 240 72% 68%;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: hsl(var(--border)); border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: hsl(var(--muted-foreground)); }
+
+/* Streaming cursor */
+@keyframes blink-cursor {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+.streaming-cursor {
+  animation: blink-cursor 0.65s ease-in-out infinite;
+}
+
+/* Fade in animation */
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Gradient text */
+.gradient-text {
+  background: linear-gradient(135deg, hsl(var(--primary)), hsl(260 84% 72%));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Code block */
+pre code {
+  font-family: var(--font-mono), 'Fira Code', monospace !important;
+  font-size: 0.8125rem !important;
+}
+
+/* Prose styles for AI messages */
+.ai-prose { line-height: 1.75; }
+.ai-prose h1, .ai-prose h2, .ai-prose h3 { font-weight: 600; margin-top: 1.25em; margin-bottom: 0.5em; }
+.ai-prose h1 { font-size: 1.25em; }
+.ai-prose h2 { font-size: 1.1em; }
+.ai-prose h3 { font-size: 1em; }
+.ai-prose p { margin-bottom: 0.75em; }
+.ai-prose ul, .ai-prose ol { margin-left: 1.25em; margin-bottom: 0.75em; }
+.ai-prose li { margin-bottom: 0.25em; }
+.ai-prose code { background: hsl(var(--muted)); padding: 0.15em 0.4em; border-radius: 0.25em; font-size: 0.85em; font-family: var(--font-mono); }
+.ai-prose pre { background: hsl(220 15% 12%); color: hsl(210 12% 88%); border-radius: 0.5em; padding: 1em; overflow-x: auto; margin: 0.75em 0; }
+.ai-prose pre code { background: none; padding: 0; color: inherit; }
+.ai-prose blockquote { border-left: 3px solid hsl(var(--border)); padding-left: 1em; color: hsl(var(--muted-foreground)); margin: 0.75em 0; }
+.ai-prose strong { font-weight: 600; }
+.ai-prose a { color: hsl(var(--primary)); text-decoration: underline; text-underline-offset: 2px; }
+.ai-prose table { width: 100%; border-collapse: collapse; margin: 0.75em 0; font-size: 0.875em; }
+.ai-prose th { background: hsl(var(--muted)); font-weight: 600; text-align: left; padding: 0.5em 0.75em; border: 1px solid hsl(var(--border)); }
+.ai-prose td { padding: 0.5em 0.75em; border: 1px solid hsl(var(--border)); }
+.ai-prose tr:nth-child(even) td { background: hsl(var(--muted) / 0.4); }
+
+/* Shimmer animation */
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* Custom Range Input Styles */
+input[type='range'].studio-slider {
+  @apply appearance-none bg-transparent cursor-pointer overflow-hidden;
+}
+
+input[type='range'].studio-slider::-webkit-slider-runnable-track {
+  @apply h-1.5 bg-white/10 rounded-full border border-white/5;
+}
+
+input[type='range'].studio-slider::-webkit-slider-thumb {
+  @apply appearance-none w-4 h-4 rounded-full bg-white shadow-xl -mt-[5.5px] border-2 border-primary transition-transform active:scale-125;
+  box-shadow: 0 0 15px rgba(124, 58, 237, 0.4);
+}
+
+input[type='range'].studio-slider::-moz-range-track {
+  @apply h-1.5 bg-white/10 rounded-full border border-white/5;
+}
+
+input[type='range'].studio-slider::-moz-range-thumb {
+  @apply w-4 h-4 rounded-full bg-white border-2 border-primary transition-transform active:scale-125;
+  box-shadow: 0 0 15px rgba(124, 58, 237, 0.4);
+}
+
+@layer utilities {
+  .glass {
+    @apply bg-background/60 backdrop-blur-xl border border-white/10 shadow-xl;
+  }
+  .glass-dark {
+    @apply bg-black/40 backdrop-blur-2xl border border-white/5 shadow-2xl;
+  }
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-br from-primary to-accent font-black tracking-tight;
+  }
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 4px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-muted-foreground/20 rounded-full hover:bg-muted-foreground/40 transition-colors;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
