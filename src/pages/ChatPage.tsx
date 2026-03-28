@@ -92,21 +92,31 @@ export function ChatPage({
   return (
     <div className="flex flex-col h-full">
       {/* Mode badge */}
-      <div className="px-4 py-2.5 border-b border-border bg-card/60 backdrop-blur-sm shrink-0">
+      <div className="px-4 py-2 border-b border-border shrink-0" style={{ background: 'rgba(255,255,255,0.7)', backdropFilter: 'blur(10px)' }}>
         <div className="flex items-center gap-2 max-w-3xl mx-auto">
-          <div className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border ${meta.bg} ${meta.color}`}>
+          <div className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold border ${meta.bg} ${meta.color}`}>
             {meta.icon}
             {meta.label}
           </div>
           {mode === 'search' && (
-            <span className="text-xs text-muted-foreground">· Sources included in responses</span>
+            <span className="text-[11px] text-gray-400">· Live web results included</span>
           )}
         </div>
       </div>
 
       {/* Messages area */}
       <div className="flex-1 overflow-y-auto px-4 py-6">
-        <div className="max-w-3xl mx-auto space-y-6">
+        <div className="max-w-3xl mx-auto space-y-5">
+          {/* Date separator at top */}
+          {messages.length > 0 && (
+            <div className="flex items-center gap-3 my-2">
+              <div className="flex-1 h-px bg-gray-100" />
+              <span className="text-[10px] font-medium text-gray-400 uppercase tracking-wide">
+                {new Date(messages[0].createdAt).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
+              </span>
+              <div className="flex-1 h-px bg-gray-100" />
+            </div>
+          )}
           {messages.map((msg, idx) => (
             <MessageBubble
               key={msg.id}

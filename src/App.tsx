@@ -451,30 +451,59 @@ export default function App() {
 
       {/* Main content */}
       <div className="flex-1 flex flex-col min-w-0 h-screen">
-        {/* Mobile header */}
+        {/* Top header bar — shown on all screens */}
         <div
-          className="flex items-center gap-3 px-4 py-3 lg:hidden shrink-0"
+          className="flex items-center h-14 px-4 shrink-0"
           style={{
-            background: 'rgba(255,255,255,0.9)',
-            backdropFilter: 'blur(20px) saturate(180%)',
-            WebkitBackdropFilter: 'blur(20px) saturate(180%)',
-            borderBottom: '1px solid rgba(0,0,0,0.06)',
+            background: 'rgba(255,255,255,0.95)',
+            backdropFilter: 'blur(20px)',
+            WebkitBackdropFilter: 'blur(20px)',
+            borderBottom: '1px solid rgba(0,0,0,0.07)',
           }}
         >
+          {/* Mobile menu button */}
           <button
             onClick={() => setMobileSidebarOpen(true)}
-            className="p-2 rounded-xl transition-colors"
-            style={{ color: 'rgba(0,0,0,0.5)' }}
+            className="p-2 rounded-xl transition-colors lg:hidden mr-1"
+            style={{ color: 'rgba(0,0,0,0.45)' }}
             onMouseEnter={e => (e.currentTarget as HTMLButtonElement).style.background = 'rgba(0,0,0,0.04)'}
             onMouseLeave={e => (e.currentTarget as HTMLButtonElement).style.background = 'transparent'}
           >
-            <Menu size={18} />
+            <Menu size={17} />
           </button>
-          <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-indigo-500 to-violet-500 flex items-center justify-center">
-              <Sparkles size={13} className="text-white" />
+
+          {/* Mobile logo */}
+          <div className="flex items-center gap-2 lg:hidden">
+            <div className="w-7 h-7 rounded-xl bg-gradient-to-br from-indigo-500 to-violet-500 flex items-center justify-center shadow-sm">
+              <Sparkles size={12} className="text-white" />
             </div>
             <span className="font-semibold text-sm text-gray-900 tracking-tight">TooliAi</span>
+          </div>
+
+          {/* Spacer */}
+          <div className="flex-1" />
+
+          {/* Page title — desktop */}
+          <div className="hidden lg:flex items-center gap-2 text-sm text-gray-500">
+            <span className="font-medium text-gray-800">{isInChat ? 'Conversation' : 'New Chat'}</span>
+          </div>
+
+          <div className="flex-1" />
+
+          {/* Right actions */}
+          <div className="flex items-center gap-2">
+            {isInChat && (
+              <button
+                onClick={handleNewChat}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium transition-all duration-150"
+                style={{ background: 'rgba(0,0,0,0.04)', color: 'rgba(0,0,0,0.55)' }}
+                onMouseEnter={e => (e.currentTarget as HTMLButtonElement).style.background = 'rgba(0,0,0,0.07)'}
+                onMouseLeave={e => (e.currentTarget as HTMLButtonElement).style.background = 'rgba(0,0,0,0.04)'}
+              >
+                <Sparkles size={12} />
+                New Chat
+              </button>
+            )}
           </div>
         </div>
 

@@ -2,7 +2,8 @@ import { useState, useRef, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   Send, Paperclip, Mic, MicOff, Loader2, Image, Globe,
-  MessageSquare, FileSearch, ChevronDown, Zap, X, Square
+  MessageSquare, FileSearch, ChevronDown, Zap, X, Square,
+  Grid3X3, Plus
 } from 'lucide-react'
 import type { Mode, ChatModel, ImageModel } from '../../types'
 import { CHAT_MODELS, IMAGE_MODELS, PROVIDER_COLORS } from '../../lib/models'
@@ -26,18 +27,18 @@ interface InputBarProps {
   onVoiceCancel?: () => void
 }
 
-const MODE_CONFIG: Record<Mode, { icon: React.ReactNode; label: string; placeholder: string; color: string }> = {
-  chat: { icon: <MessageSquare size={13} />, label: 'Chat', placeholder: 'Message AI Suite…', color: 'text-indigo-500' },
-  search: { icon: <Globe size={13} />, label: 'Search', placeholder: 'Search the web…', color: 'text-emerald-500' },
-  image: { icon: <Image size={13} />, label: 'Image', placeholder: 'Describe an image to generate…', color: 'text-pink-500' },
-  analyze: { icon: <FileSearch size={13} />, label: 'Analyze', placeholder: 'Attach a file and ask anything…', color: 'text-amber-500' },
+const MODE_CONFIG: Record<Mode, { icon: React.ReactNode; label: string; placeholder: string; color: string; bg: string }> = {
+  chat: { icon: <MessageSquare size={12} />, label: 'Chat', placeholder: 'Ask me anything…', color: 'text-indigo-600', bg: 'bg-indigo-50' },
+  search: { icon: <Globe size={12} />, label: 'Web Search', placeholder: 'Search the web…', color: 'text-emerald-600', bg: 'bg-emerald-50' },
+  image: { icon: <Image size={12} />, label: 'Image Gen', placeholder: 'Describe an image to create…', color: 'text-pink-600', bg: 'bg-pink-50' },
+  analyze: { icon: <FileSearch size={12} />, label: 'Analyze', placeholder: 'Attach a file and ask anything…', color: 'text-amber-600', bg: 'bg-amber-50' },
 }
 
 export function InputBar({
   mode, chatModel, imageModel,
   isLoading, isRecording, isProcessing,
   onSend, onStop, onModeChange, onChatModelChange, onImageModelChange,
-  onVoiceStart, onVoiceStop, onVoiceCancel,
+  onVoiceStart, onVoiceStop,
 }: InputBarProps) {
   const [text, setText] = useState('')
   const [file, setFile] = useState<File | null>(null)
@@ -73,7 +74,6 @@ export function InputBar({
 
   const handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setText(e.target.value)
-    // Auto-resize
     const el = e.target
     el.style.height = 'auto'
     el.style.height = Math.min(el.scrollHeight, 180) + 'px'
@@ -92,6 +92,8 @@ export function InputBar({
     }
   }
 
+  const canSend = !!(text.trim() || file)
+
   return (
     <div className="relative">
       {/* File preview */}
@@ -101,14 +103,14 @@ export function InputBar({
             initial={{ opacity: 0, y: 4 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 4 }}
-            className="mb-2 flex items-center gap-2 px-3 py-2 bg-muted rounded-xl border border-border text-xs"
+            className="mb-2 flex items-center gap-2 px-3 py-2 bg-gray-50 rounded-xl border border-gray-200 text-xs"
           >
-            <Paperclip size={12} className="text-muted-foreground shrink-0" />
-            <span className="truncate flex-1 text-foreground">{file.name}</span>
-            <span className="text-muted-foreground shrink-0">{(file.size / 1024).toFixed(0)}KB</span>
+            <Paperclip size={12} className="text-gray-400 shrink-0" />
+            <span className="truncate flex-1 text-gray-700">{file.name}</span>
+            <span className="text-gray-400 shrink-0">{(file.size / 1024).toFixed(0)}KB</span>
             <button
               onClick={() => setFile(null)}
-              className="shrink-0 text-muted-foreground hover:text-foreground transition-colors"
+              className="shrink-0 text-gray-400 hover:text-gray-600 transition-colors"
             >
               <X size={12} />
             </button>
@@ -116,9 +118,19 @@ export function InputBar({
         )}
       </AnimatePresence>
 
-      {/* Main input container */}
-      <div className="relative bg-card border border-border rounded-2xl shadow-sm focus-within:border-primary/50 focus-within:shadow-md transition-all duration-200">
-
+      {/* Main input card */}
+      <div
+        className="relative rounded-2xl transition-all duration-200"
+        style={{
+          background: '#ffffff',
+          border: '1px solid rgba(0,0,0,0.09)',
+          boxShadow: '0 2px 12px rgba(0,0,0,0.07)',
+        }}
+        onFocus={() => {
+          const el = document.activeElement?.closest('.relative') as HTMLElement
+          if (el) el.style.boxShadow = '0 2px 16px rgba(79,70,229,0.12)'
+        }}
+      >
         {/* Textarea */}
         <textarea
           ref={textareaRef}
@@ -128,49 +140,77 @@ export function InputBar({
           placeholder={currentMode.placeholder}
           rows={1}
           disabled={isLoading && !onStop}
-          className="w-full px-4 pt-3.5 pb-1 text-sm bg-transparent resize-none focus:outline-none placeholder:text-muted-foreground/60 leading-relaxed min-h-[48px]"
-          style={{ maxHeight: '180px' }}
+          className="w-full px-4 pt-4 pb-2 text-sm bg-transparent resize-none focus:outline-none text-gray-800 leading-relaxed min-h-[52px]"
+          style={{
+            maxHeight: '180px',
+            fontSize: '14px',
+            color: '#111827',
+          }}
         />
+        <style>{`textarea::placeholder { color: rgba(0,0,0,0.35); font-size: 14px; }`}</style>
 
         {/* Bottom toolbar */}
-        <div className="flex items-center justify-between px-3 pb-2.5 pt-1 gap-2">
+        <div className="flex items-center justify-between px-3 pb-3 pt-1 gap-2">
 
           {/* Left tools */}
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-1.5">
+            {/* Attach file button */}
+            {(mode === 'analyze' || mode === 'chat') && (
+              <>
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  className="hidden"
+                  onChange={handleFileChange}
+                  accept="image/*,.pdf,.txt,.md,.csv,.json,.docx"
+                />
+                <button
+                  onClick={() => fileInputRef.current?.click()}
+                  className="w-7 h-7 rounded-full flex items-center justify-center transition-all duration-150"
+                  style={{ background: 'rgba(0,0,0,0.05)', color: 'rgba(0,0,0,0.45)' }}
+                  title="Attach file"
+                  onMouseEnter={e => (e.currentTarget as HTMLButtonElement).style.background = 'rgba(0,0,0,0.09)'}
+                  onMouseLeave={e => (e.currentTarget as HTMLButtonElement).style.background = 'rgba(0,0,0,0.05)'}
+                >
+                  <Plus size={13} />
+                </button>
+              </>
+            )}
+
             {/* Mode picker */}
             <div className="relative">
               <button
                 onClick={() => { setShowModeMenu(v => !v); setShowModelMenu(false) }}
                 className={cn(
-                  'flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-medium transition-colors border',
-                  'bg-muted/50 border-border hover:bg-muted text-muted-foreground hover:text-foreground'
+                  'flex items-center gap-1 px-2.5 py-1.5 rounded-full text-[11px] font-semibold transition-all duration-150',
+                  currentMode.bg, currentMode.color
                 )}
               >
-                <span className={currentMode.color}>{currentMode.icon}</span>
+                {currentMode.icon}
                 <span>{currentMode.label}</span>
-                <ChevronDown size={11} className="opacity-50" />
+                <ChevronDown size={9} className="opacity-60" />
               </button>
               <AnimatePresence>
                 {showModeMenu && (
                   <>
                     <div className="fixed inset-0 z-10" onClick={() => setShowModeMenu(false)} />
                     <motion.div
-                      initial={{ opacity: 0, scale: 0.96, y: -4 }}
+                      initial={{ opacity: 0, scale: 0.95, y: -4 }}
                       animate={{ opacity: 1, scale: 1, y: 0 }}
-                      exit={{ opacity: 0, scale: 0.96, y: -4 }}
+                      exit={{ opacity: 0, scale: 0.95, y: -4 }}
                       transition={{ duration: 0.12 }}
-                      className="absolute bottom-full left-0 mb-2 w-44 bg-card border border-border rounded-xl shadow-lg z-20 overflow-hidden"
+                      className="absolute bottom-full left-0 mb-2 w-44 bg-white border border-gray-100 rounded-2xl shadow-lg z-20 overflow-hidden py-1"
                     >
                       {Object.entries(MODE_CONFIG).map(([key, cfg]) => (
                         <button
                           key={key}
                           onClick={() => { onModeChange(key as Mode); setShowModeMenu(false) }}
                           className={cn(
-                            'w-full flex items-center gap-2.5 px-3 py-2 text-xs transition-colors text-left',
-                            mode === key ? 'bg-primary/10 text-primary font-medium' : 'hover:bg-muted text-muted-foreground hover:text-foreground'
+                            'w-full flex items-center gap-2.5 px-3.5 py-2.5 text-xs transition-colors text-left',
+                            mode === key ? `${cfg.bg} ${cfg.color} font-semibold` : 'hover:bg-gray-50 text-gray-600'
                           )}
                         >
-                          <span className={cfg.color}>{cfg.icon}</span>
+                          <span className={mode === key ? cfg.color : 'text-gray-400'}>{cfg.icon}</span>
                           {cfg.label}
                         </button>
                       ))}
@@ -184,29 +224,30 @@ export function InputBar({
             <div className="relative">
               <button
                 onClick={() => { setShowModelMenu(v => !v); setShowModeMenu(false) }}
-                className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-medium bg-muted/50 border border-border hover:bg-muted text-muted-foreground hover:text-foreground transition-colors"
+                className="flex items-center gap-1 px-2.5 py-1.5 rounded-full text-[11px] font-medium bg-gray-100 text-gray-600 hover:bg-gray-150 transition-colors"
+                style={{ background: 'rgba(0,0,0,0.05)' }}
               >
-                <Zap size={11} className="text-primary" />
-                <span className="max-w-[120px] truncate">{activeModel?.label ?? 'Model'}</span>
-                <ChevronDown size={11} className="opacity-50" />
+                <Zap size={10} className="text-indigo-500" />
+                <span className="max-w-[90px] truncate">{activeModel?.label ?? 'Model'}</span>
+                <ChevronDown size={9} className="opacity-50" />
               </button>
               <AnimatePresence>
                 {showModelMenu && (
                   <>
                     <div className="fixed inset-0 z-10" onClick={() => setShowModelMenu(false)} />
                     <motion.div
-                      initial={{ opacity: 0, scale: 0.96, y: -4 }}
+                      initial={{ opacity: 0, scale: 0.95, y: -4 }}
                       animate={{ opacity: 1, scale: 1, y: 0 }}
-                      exit={{ opacity: 0, scale: 0.96, y: -4 }}
+                      exit={{ opacity: 0, scale: 0.95, y: -4 }}
                       transition={{ duration: 0.12 }}
-                      className="absolute bottom-full left-0 mb-2 w-64 bg-card border border-border rounded-xl shadow-lg z-20 overflow-hidden"
+                      className="absolute bottom-full left-0 mb-2 w-60 bg-white border border-gray-100 rounded-2xl shadow-lg z-20 overflow-hidden"
                     >
-                      <div className="px-3 pt-3 pb-1.5">
-                        <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">
+                      <div className="px-3.5 pt-3 pb-1.5">
+                        <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider">
                           {isImageMode ? 'Image Models' : 'Chat Models'}
                         </p>
                       </div>
-                      <div className="px-2 pb-2 max-h-64 overflow-y-auto space-y-0.5">
+                      <div className="px-2 pb-2 max-h-60 overflow-y-auto space-y-0.5">
                         {(isImageMode ? IMAGE_MODELS : CHAT_MODELS).map((m) => {
                           const isActive = isImageMode ? imageModel === m.value : chatModel === m.value
                           return (
@@ -218,18 +259,18 @@ export function InputBar({
                                 setShowModelMenu(false)
                               }}
                               className={cn(
-                                'w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg transition-colors text-left',
-                                isActive ? 'bg-primary/10 text-primary' : 'hover:bg-muted text-muted-foreground hover:text-foreground'
+                                'w-full flex items-center gap-2.5 px-2.5 py-2 rounded-xl transition-colors text-left',
+                                isActive ? 'bg-indigo-50 text-indigo-700' : 'hover:bg-gray-50 text-gray-600'
                               )}
                             >
                               <div className="flex-1 min-w-0">
                                 <div className="text-xs font-medium truncate">{m.label}</div>
-                                <div className="text-[10px] text-muted-foreground">{m.desc}</div>
+                                <div className="text-[10px] text-gray-400">{m.desc}</div>
                               </div>
-                              <span className={cn('text-[9px] font-semibold px-1.5 py-0.5 rounded-md shrink-0', PROVIDER_COLORS[m.provider])}>
+                              <span className={cn('text-[9px] font-bold px-1.5 py-0.5 rounded-md shrink-0', PROVIDER_COLORS[m.provider])}>
                                 {m.badge}
                               </span>
-                              {isActive && <div className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />}
+                              {isActive && <div className="w-1.5 h-1.5 rounded-full bg-indigo-500 shrink-0" />}
                             </button>
                           )
                         })}
@@ -240,61 +281,47 @@ export function InputBar({
               </AnimatePresence>
             </div>
 
-            {/* File attach */}
-            {(mode === 'analyze' || mode === 'chat') && (
-              <>
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  className="hidden"
-                  onChange={handleFileChange}
-                  accept="image/*,.pdf,.txt,.md,.csv,.json,.docx"
-                />
-                <button
-                  onClick={() => fileInputRef.current?.click()}
-                  className="p-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
-                  title="Attach file"
-                >
-                  <Paperclip size={15} />
-                </button>
-              </>
-            )}
-
             {/* Voice input */}
             {onVoiceStart && (
               <button
                 onClick={handleVoiceClick}
                 disabled={isProcessing}
                 className={cn(
-                  'p-1.5 rounded-lg transition-colors',
+                  'w-7 h-7 rounded-full flex items-center justify-center transition-colors',
                   isRecording
-                    ? 'text-red-500 bg-red-50  hover:bg-red-100'
-                    : 'text-muted-foreground hover:text-foreground hover:bg-muted',
+                    ? 'text-red-500 bg-red-50 hover:bg-red-100'
+                    : 'text-gray-400 hover:text-gray-600',
                   isProcessing && 'opacity-60 cursor-not-allowed'
                 )}
+                style={{ background: isRecording ? undefined : 'rgba(0,0,0,0.05)' }}
                 title={isRecording ? 'Stop recording' : 'Voice input'}
               >
-                {isProcessing ? <Loader2 size={15} className="animate-spin" /> :
-                  isRecording ? <MicOff size={15} /> : <Mic size={15} />}
+                {isProcessing ? <Loader2 size={13} className="animate-spin" /> :
+                  isRecording ? <MicOff size={13} /> : <Mic size={13} />}
               </button>
             )}
           </div>
 
-          {/* Send / Stop button */}
+          {/* Send / Stop button — circular */}
           <button
             onClick={isLoading && onStop ? onStop : handleSend}
-            disabled={isLoading && !onStop ? true : !isLoading && !text.trim() && !file}
+            disabled={isLoading && !onStop ? true : !isLoading && !canSend}
             className={cn(
-              'w-9 h-9 rounded-xl flex items-center justify-center transition-all duration-150 shrink-0',
-              (isLoading && onStop) || (text.trim() || file)
-                ? 'bg-primary text-primary-foreground shadow-sm hover:opacity-90 scale-100'
-                : 'bg-muted text-muted-foreground cursor-not-allowed'
+              'w-9 h-9 rounded-full flex items-center justify-center transition-all duration-200 shrink-0',
+              (isLoading && onStop) || canSend
+                ? 'text-white scale-100 hover:scale-105 active:scale-95'
+                : 'bg-gray-100 text-gray-300 cursor-not-allowed'
             )}
+            style={
+              (isLoading && onStop) || canSend
+                ? { background: 'linear-gradient(135deg, #4F46E5, #7C3AED)', boxShadow: '0 2px 8px rgba(79,70,229,0.35)' }
+                : undefined
+            }
           >
             {isLoading ? (
-              onStop ? <Square size={14} fill="currentColor" /> : <Loader2 size={15} className="animate-spin" />
+              onStop ? <Square size={13} fill="currentColor" /> : <Loader2 size={15} className="animate-spin" />
             ) : (
-              <Send size={15} />
+              <Send size={14} />
             )}
           </button>
         </div>

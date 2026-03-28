@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { Globe, Image, FileSearch, MessageSquare, ArrowRight, Crown, Zap, Sparkles } from 'lucide-react'
+import { Globe, Image, FileSearch, MessageSquare, ArrowRight, Crown, Zap, Sparkles, Bot } from 'lucide-react'
 import type { Mode, ChatModel, ImageModel, PlanTier } from '../types'
 import { InputBar } from '../components/chat/InputBar'
 import { DEFAULT_CHAT_MODEL, DEFAULT_IMAGE_MODEL, PLANS } from '../lib/models'
@@ -20,82 +20,94 @@ interface HomePageProps {
   onUpgrade: () => void
 }
 
-const SUGGESTIONS = [
+const FEATURE_CARDS = [
   {
-    icon: <Globe size={16} className="text-emerald-500" />,
+    category: 'SEARCH',
+    categoryColor: 'text-emerald-600',
+    icon: <Globe size={22} className="text-emerald-600" />,
     iconBg: 'bg-emerald-50',
     title: 'Search the web',
-    desc: 'Real-time answers with sources',
+    desc: 'Real-time answers with live sources',
     mode: 'search' as Mode,
     prompt: 'What are the latest AI breakthroughs in 2025?',
+    border: 'hover:border-emerald-200',
   },
   {
-    icon: <Image size={16} className="text-pink-500" />,
+    category: 'CREATIVITY',
+    categoryColor: 'text-pink-600',
+    icon: <Image size={22} className="text-pink-600" />,
     iconBg: 'bg-pink-50',
-    title: 'Generate an image',
-    desc: 'Create stunning visuals with AI',
+    title: 'Generate images',
+    desc: 'Create stunning visuals with AI art models',
     mode: 'image' as Mode,
     prompt: 'A cinematic photo of a neon-lit Tokyo street at night, raining',
+    border: 'hover:border-pink-200',
   },
   {
-    icon: <FileSearch size={16} className="text-amber-500" />,
+    category: 'ANALYSIS',
+    categoryColor: 'text-amber-600',
+    icon: <FileSearch size={22} className="text-amber-600" />,
     iconBg: 'bg-amber-50',
-    title: 'Analyze a document',
-    desc: 'Upload files and extract insights',
+    title: 'Analyze documents',
+    desc: 'Upload files and extract key insights',
     mode: 'analyze' as Mode,
     prompt: 'Summarize and extract the key points from this document',
+    border: 'hover:border-amber-200',
   },
   {
-    icon: <MessageSquare size={16} className="text-indigo-500" />,
+    category: 'PRODUCTIVITY',
+    categoryColor: 'text-indigo-600',
+    icon: <MessageSquare size={22} className="text-indigo-600" />,
     iconBg: 'bg-indigo-50',
-    title: 'Write content',
-    desc: 'Draft emails, code, and more',
+    title: 'Write & code',
+    desc: 'Draft emails, essays, and generate code',
     mode: 'chat' as Mode,
     prompt: 'Write a compelling LinkedIn post about the importance of continuous learning in tech',
+    border: 'hover:border-indigo-200',
   },
 ]
-
-function getGreeting() {
-  const h = new Date().getHours()
-  if (h < 5) return 'Good night'
-  if (h < 12) return 'Good morning'
-  if (h < 17) return 'Good afternoon'
-  return 'Good evening'
-}
 
 export function HomePage({
   user, mode, chatModel, imageModel, planTier,
   messageCount, imageCount, isLoading,
   onSend, onModeChange, onChatModelChange, onImageModelChange, onUpgrade
 }: HomePageProps) {
-  const name = user?.displayName || user?.email?.split('@')[0] || 'there'
-  const greeting = getGreeting()
+  const name = user?.displayName || user?.email?.split('@')[0] || null
   const plan = PLANS.find(p => p.id === planTier) ?? PLANS[0]
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-full px-4 py-10 max-w-3xl mx-auto w-full">
+    <div className="flex flex-col items-center justify-center min-h-full px-4 py-10 max-w-2xl mx-auto w-full">
 
-      {/* Logo + Greeting */}
+      {/* Bot Avatar + Hero */}
       <motion.div
-        initial={{ opacity: 0, y: -16 }}
+        initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.45 }}
-        className="text-center mb-10"
+        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+        className="text-center mb-8"
       >
+        {/* Teal bot avatar */}
         <div className="flex items-center justify-center mb-5">
           <div
-            className="w-14 h-14 rounded-2xl bg-gradient-to-br from-indigo-500 to-violet-500 flex items-center justify-center hover:scale-105 transition-transform duration-200"
-            style={{ boxShadow: '0 4px 20px rgba(99,102,241,0.25)' }}
+            className="w-16 h-16 rounded-full flex items-center justify-center"
+            style={{
+              background: 'linear-gradient(135deg, #0D9488, #0891B2)',
+              boxShadow: '0 0 0 6px rgba(13,148,136,0.08), 0 4px 20px rgba(13,148,136,0.25)',
+            }}
           >
-            <Sparkles size={26} className="text-white" />
+            <Bot size={30} className="text-white" />
           </div>
         </div>
-        <h1 className="text-[28px] font-semibold tracking-[-0.02em] text-gray-900 mb-2">
-          {greeting},{' '}
-          <span className="text-gradient">{name}</span>
+
+        <h1 className="text-[32px] font-bold tracking-tight text-gray-900 mb-2 leading-tight">
+          {name ? (
+            <>Hey, I'm <span style={{ background: 'linear-gradient(135deg, #4F46E5, #0D9488)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>TooliAi</span>.</>
+          ) : (
+            <>Hey, I'm <span style={{ background: 'linear-gradient(135deg, #4F46E5, #0D9488)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>TooliAi</span>.</>
+          )}
         </h1>
-        <p className="text-[15px]" style={{ color: 'rgba(0,0,0,0.45)' }}>
-          What would you like to create today?
+        <p className="text-[15px] text-gray-500 leading-relaxed">
+          {name ? `Welcome back, ${name}. ` : ''}
+          I'm your AI assistant. Ask me anything.
         </p>
       </motion.div>
 
@@ -105,78 +117,89 @@ export function HomePage({
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.05 }}
-          className="w-full mb-6"
+          className="w-full mb-5"
         >
           <div
-            className="flex items-center gap-3 p-3.5 rounded-2xl"
-            style={{ background: '#fff', border: '1px solid rgba(0,0,0,0.06)', boxShadow: '0 1px 4px rgba(0,0,0,0.04)' }}
+            className="flex items-center gap-3 px-4 py-3 rounded-2xl"
+            style={{ background: '#fff', border: '1px solid rgba(0,0,0,0.07)', boxShadow: '0 1px 4px rgba(0,0,0,0.04)' }}
           >
-            <div className="flex items-center gap-1.5 text-xs" style={{ color: 'rgba(0,0,0,0.45)' }}>
+            <div className="flex items-center gap-1.5 text-xs text-gray-500">
               <Zap size={12} className="text-indigo-500" />
-              <span>{messageCount}/{plan.limits.messagesPerDay} messages today</span>
+              <span>{messageCount}/{plan.limits.messagesPerDay} messages</span>
             </div>
-            <div className="h-3.5 w-px" style={{ background: 'rgba(0,0,0,0.08)' }} />
-            <div className="flex items-center gap-1.5 text-xs" style={{ color: 'rgba(0,0,0,0.45)' }}>
+            <div className="h-3 w-px bg-gray-200" />
+            <div className="flex items-center gap-1.5 text-xs text-gray-500">
               <Image size={12} className="text-pink-500" />
-              <span>{imageCount}/{plan.limits.imagesPerDay} images today</span>
+              <span>{imageCount}/{plan.limits.imagesPerDay} images</span>
             </div>
             <button
               onClick={onUpgrade}
-              className="ml-auto flex items-center gap-1 text-xs font-medium text-indigo-600 hover:text-indigo-700 transition-colors"
+              className="ml-auto flex items-center gap-1 text-xs font-semibold text-indigo-600 hover:text-indigo-700 transition-colors"
             >
               <Crown size={11} />
               Upgrade
-              <ArrowRight size={11} />
+              <ArrowRight size={10} />
             </button>
           </div>
         </motion.div>
       )}
 
-      {/* Suggestion cards */}
+      {/* Feature cards 2×2 grid */}
       <motion.div
-        initial={{ opacity: 0, y: 10 }}
+        initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.45, delay: 0.1 }}
-        className="grid grid-cols-2 gap-2.5 w-full mb-8"
+        transition={{ duration: 0.5, delay: 0.1 }}
+        className="grid grid-cols-2 gap-3 w-full mb-7"
       >
-        {SUGGESTIONS.map(({ icon, iconBg, title, desc, mode: suggMode, prompt }) => (
+        {FEATURE_CARDS.map(({ category, categoryColor, icon, iconBg, title, desc, mode: cardMode, prompt, border }, i) => (
           <motion.button
             key={title}
-            whileHover={{ scale: 1.015, y: -2 }}
-            whileTap={{ scale: 0.985 }}
-            onClick={() => { onModeChange(suggMode); onSend(prompt) }}
-            className="flex items-start gap-3 p-4 rounded-2xl text-left transition-all duration-200"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.12 + i * 0.05 }}
+            whileHover={{ scale: 1.02, y: -2 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={() => { onModeChange(cardMode); onSend(prompt) }}
+            className={`flex flex-col items-start gap-2.5 p-4 rounded-2xl text-left border transition-all duration-200 ${border}`}
             style={{
               background: '#ffffff',
-              border: '1px solid rgba(0,0,0,0.06)',
-              boxShadow: '0 1px 4px rgba(0,0,0,0.04)',
+              border: '1px solid rgba(0,0,0,0.07)',
+              boxShadow: '0 1px 4px rgba(0,0,0,0.05)',
+              minHeight: '130px',
             }}
             onMouseEnter={e => {
               const el = e.currentTarget as HTMLButtonElement
-              el.style.border = '1px solid rgba(0,0,0,0.10)'
-              el.style.boxShadow = '0 4px 16px rgba(0,0,0,0.08)'
+              el.style.boxShadow = '0 6px 20px rgba(0,0,0,0.09)'
             }}
             onMouseLeave={e => {
               const el = e.currentTarget as HTMLButtonElement
-              el.style.border = '1px solid rgba(0,0,0,0.06)'
-              el.style.boxShadow = '0 1px 4px rgba(0,0,0,0.04)'
+              el.style.boxShadow = '0 1px 4px rgba(0,0,0,0.05)'
             }}
           >
-            <div className={`w-9 h-9 rounded-xl ${iconBg} flex items-center justify-center shrink-0`}>{icon}</div>
-            <div className="flex-1 min-w-0">
-              <div className="font-semibold text-[13px] text-gray-900 mb-0.5">{title}</div>
-              <div className="text-[12px] leading-snug" style={{ color: 'rgba(0,0,0,0.45)' }}>{desc}</div>
+            {/* Category label */}
+            <span className={`text-[9px] font-bold tracking-[0.12em] uppercase ${categoryColor} opacity-70`}>
+              {category}
+            </span>
+
+            {/* Icon */}
+            <div className={`w-10 h-10 rounded-xl ${iconBg} flex items-center justify-center`}>
+              {icon}
             </div>
-            <ArrowRight size={13} className="shrink-0 mt-1" style={{ color: 'rgba(0,0,0,0.25)' }} />
+
+            {/* Text */}
+            <div>
+              <div className="font-semibold text-[13px] text-gray-900 mb-0.5 leading-tight">{title}</div>
+              <div className="text-[11px] text-gray-400 leading-snug">{desc}</div>
+            </div>
           </motion.button>
         ))}
       </motion.div>
 
       {/* Input bar */}
       <motion.div
-        initial={{ opacity: 0, y: 10 }}
+        initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.45, delay: 0.18 }}
+        transition={{ duration: 0.5, delay: 0.22 }}
         className="w-full"
       >
         <InputBar
@@ -190,14 +213,17 @@ export function HomePage({
           onImageModelChange={onImageModelChange}
         />
         {!user ? (
-          <p className="text-center text-[12px] text-muted-foreground mt-3">
-            <span className="text-primary cursor-pointer hover:underline font-medium" onClick={() => onSend('')}>
+          <p className="text-center text-[11px] text-gray-400 mt-3">
+            <span
+              className="text-indigo-600 cursor-pointer hover:underline font-medium"
+              onClick={() => onSend('')}
+            >
               Sign in
             </span>
-            {' '}to start chatting with TooliAi · GPT-4.1 · Gemini · Groq
+            {' '}to save your chats · GPT-4.1 · Gemini · Groq
           </p>
         ) : (
-          <p className="text-center text-[11px] text-muted-foreground/60 mt-3">
+          <p className="text-center text-[10px] text-gray-300 mt-3">
             TooliAi · GPT-4.1 · Gemini · Groq · Cloudflare AI
           </p>
         )}

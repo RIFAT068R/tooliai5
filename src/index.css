@@ -19,25 +19,25 @@
 }
 
 :root {
-  --background: 0 0% 99%;
-  --foreground: 224 15% 12%;
+  --background: 0 0% 98%;
+  --foreground: 220 14% 11%;
   --card: 0 0% 100%;
-  --card-foreground: 224 15% 12%;
+  --card-foreground: 220 14% 11%;
   --popover: 0 0% 100%;
-  --popover-foreground: 224 15% 12%;
-  --primary: 239 84% 67%;
+  --popover-foreground: 220 14% 11%;
+  --primary: 245 80% 60%;
   --primary-foreground: 0 0% 100%;
-  --secondary: 240 5% 96%;
-  --secondary-foreground: 240 6% 30%;
-  --muted: 240 5% 96%;
-  --muted-foreground: 240 4% 52%;
-  --accent: 240 5% 94%;
-  --accent-foreground: 240 6% 25%;
+  --secondary: 210 6% 96%;
+  --secondary-foreground: 220 9% 35%;
+  --muted: 210 6% 96%;
+  --muted-foreground: 215 5% 50%;
+  --accent: 210 6% 94%;
+  --accent-foreground: 220 9% 25%;
   --destructive: 0 84% 60%;
   --destructive-foreground: 0 0% 100%;
-  --border: 240 6% 91%;
-  --input: 240 6% 91%;
-  --ring: 239 84% 67%;
+  --border: 220 8% 90%;
+  --input: 220 8% 90%;
+  --ring: 245 80% 60%;
 
   --sidebar: 0 0% 98%;
   --sidebar-foreground: 224 15% 12%;
@@ -138,6 +138,10 @@
   0% { transform: translateX(-100%); }
   100% { transform: translateX(100%); }
 }
+
+/* Textarea placeholder */
+textarea::placeholder { color: rgba(0,0,0,0.32); }
+input::placeholder { color: rgba(0,0,0,0.32); }
 
 /* AI prose styles */
 .ai-prose { line-height: 1.75; color: hsl(var(--foreground)); }
